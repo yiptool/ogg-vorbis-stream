@@ -80,12 +80,7 @@ size_t OggVorbisStream::tremorRead(void * buf, size_t size, size_t nmemb, void *
 
 	try
 	{
-		size_t bytesRead = istream_read(self->m_Stream, buf, size);
-
-		if (UNLIKELY(self->m_Stream.fail() || self->m_Stream.bad()))
-			throw std::runtime_error("read failed.");
-
-		return bytesRead;
+		return istream_read(self->m_Stream, buf, size);
 	}
 	catch (const std::exception & e)
 	{
@@ -109,10 +104,7 @@ int OggVorbisStream::tremorSeek(void * ud, ogg_int64_t offset, int whence)
 		default: throw std::runtime_error("invalid whence.");
 		}
 
-		self->m_Stream.seekg(static_cast<std::streamoff>(offset), dir);
-
-		if (UNLIKELY(self->m_Stream.fail() || self->m_Stream.bad()))
-			throw std::runtime_error("seek failed.");
+		istream_seek(self->m_Stream, static_cast<std::streamoff>(offset), dir);
 
 		return 0;
 	}
