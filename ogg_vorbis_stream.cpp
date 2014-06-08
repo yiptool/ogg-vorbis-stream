@@ -74,6 +74,20 @@ size_t OggVorbisStream::read(void * buf, size_t size)
 	return size_t(r);
 }
 
+void OggVorbisStream::pcmSeek(ogg_int64_t offset)
+{
+	int r = ov_pcm_seek(&m_Vorbis, offset);
+	if (UNLIKELY(r < 0))
+		throw std::runtime_error(fmt() << "ogg/vorbis decoder failed to seek (code " << r << ").");
+}
+
+void OggVorbisStream::timeSeek(ogg_int64_t offset)
+{
+	int r = ov_time_seek(&m_Vorbis, offset);
+	if (UNLIKELY(r < 0))
+		throw std::runtime_error(fmt() << "ogg/vorbis decoder failed to seek (code " << r << ").");
+}
+
 size_t OggVorbisStream::tremorRead(void * buf, size_t size, size_t nmemb, void * ud)
 {
 	OggVorbisStream * self = reinterpret_cast<OggVorbisStream *>(ud);

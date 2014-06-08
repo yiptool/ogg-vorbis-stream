@@ -38,6 +38,9 @@ public:
 
 	size_t read(void * buf, size_t size);
 
+	void pcmSeek(ogg_int64_t offset);
+	void timeSeek(ogg_int64_t offset);
+
 private:
 	std::istream & m_Stream;
 	OggVorbis_File m_Vorbis;
